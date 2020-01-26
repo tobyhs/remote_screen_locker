@@ -1,0 +1,2 @@
+bottle==0.12.18
+pyobjc-framework-Quartz==6.1
