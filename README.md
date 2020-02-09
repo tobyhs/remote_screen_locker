@@ -23,3 +23,21 @@ To run tests:
 ```sh
 python -m unittest
 ```
+
+## API
+
+For authentication, set the `REMOTE_SCREEN_LOCKER_TOKEN` environment variable
+to the desired token when running the app. Provide an `X-Token` header with the
+token for requests.
+
+To get the screen status:
+```sh
+$ curl -H 'X-Token: secret' localhost:8000/screen
+{"locked": false}
+```
+
+To lock the screen:
+```sh
+$ curl -H 'X-Token: secret' -H 'Content-Type: application/json' -X PATCH -d '{"locked": true}' localhost:8000/screen
+{"locked": true}
+```
