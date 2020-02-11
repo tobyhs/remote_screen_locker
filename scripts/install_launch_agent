@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Installs a per-user launchd agent configuration file to run
+# remote_screen_locker
+
+set -eu
+
+echo Enter token:
+read -s REMOTE_SCREEN_LOCKER_TOKEN
+
+echo Enter gunicorn options:
+read GUNICORN_OPTIONS
+
+GUNICORN_OPTIONS_XML=''
+for arg in $GUNICORN_OPTIONS; do
+  GUNICORN_OPTIONS_XML+="    <string>${arg}</string>"
+  GUNICORN_OPTIONS_XML+=$'\n'
+done
+
+launch_agent_file=~/Library/LaunchAgents/io.github.tobyhs.remote_screen_locker.plist
+touch $launch_agent_file
+chmod 600 $launch_agent_file
+
+cat > $launch_agent_file <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>io.github.tobyhs.remote_screen_locker</string>
+  <key>KeepAlive</key>
+  <true />
+
+  <key>WorkingDirectory</key>
+  <string>${PWD}</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>${PWD}/venv/bin/gunicorn</string>
+${GUNICORN_OPTIONS_XML}
+    <string>remote_screen_locker.app:app</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>REMOTE_SCREEN_LOCKER_TOKEN</key>
+    <string>${REMOTE_SCREEN_LOCKER_TOKEN}</string>
+  </dict>
+</dict>
+</plist>
+EOF
+
+echo Created/Updated $launch_agent_file
