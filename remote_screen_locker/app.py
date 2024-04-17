@@ -11,7 +11,7 @@ def get_screen() -> Dict[str, object]:
     return {'locked': screen.is_locked()}
 
 @route('/screen', 'PATCH')
-def patch_screen() -> Dict[str, object]:
+def patch_screen() -> Dict[str, object] | HTTPResponse:
     """Updates the lock status of the screen.
 
     This currently only supports locking (not unlocking) the screen remotely.
