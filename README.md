@@ -9,7 +9,7 @@ This is a web app for macOS that serves an HTTP API to:
 Install Python 3 (I used `brew install python`) and run the following from the
 project root:
 ```sh
-virtualenv -p /usr/local/bin/python3 venv
+python3 -v venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 ```
