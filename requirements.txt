@@ -1,3 +1,3 @@
 bottle==0.12.25
 gunicorn==23.0.0
-pyobjc-framework-Quartz==10.2
+pyobjc-framework-Quartz==11.0
